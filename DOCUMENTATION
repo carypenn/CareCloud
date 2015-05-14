@@ -1,0 +1,25 @@
+This is a simple API for adding and management of appointments.
+
+GET /appointments.json -> returns appointments in JSON format
+	Optional parameters : 	st => start filter
+							et => ending filter
+
+POST /appointments.json	-> Creatd a new appointment record
+	parameters : {appointment: { [properties list] } }
+
+
+PUT /appointments/id.json -> Updates the specified record
+	parameters : {appointment: { [properties list] } }
+
+DELETE /appointments/id.json -> Deletes the specified record
+
+the project contains a file at /testing_service.html which maked a series of JS calls to the server to exercise the endpoints described.
+The project includes test cases written with MiniTest to test the update/create validation on the appointments class.
+
+Any other questions about this implementation please do not hesitate to ask.
+
+cary@Penn-group.com
+
+Thanks,
+
+Cary

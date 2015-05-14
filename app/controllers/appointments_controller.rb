@@ -1,4 +1,5 @@
 class AppointmentsController < ApplicationController
+  protect_from_forgery :except => [:create,:update]
   before_action :set_appointment, only: [:show, :edit, :update, :destroy]
 
   # GET /appointments

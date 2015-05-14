@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<title>testing service</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	</head>
+	<body>
+		List<br/>
+		<div id="test1"></div><br/>
+		Insert<br/>
+		<div id="test2"></div><br/>
+		Delete<br/>
+		<div id="test3"></div><br/>
+		Update<br/>
+		<div id="test4"></div><br/>
+		<br/>
+		<script>
+		var last_id = null;
+		$.get('http://localhost:3000/appointments.json', function(data){
+			showData("test1",data);
+			last_id = data[data.length-1].id;
+			var app_u = {appointment: {start_time: '2015-12-01 12:00:00', end_time: '2015-12-02 12:00:00', first_name: 'Updated Test', last_name: 'Updated User'}};
+			$.ajax({
+				    url: 'http://localhost:3000/appointments/'+last_id+'.json',
+				    type: 'PUT',
+				    data: app_u,
+				    success: function(result) {
+				        console.log("Appointment updated");
+				        $.get('http://localhost:3000/appointments.json', function(data){
+							showData("test4",data);
+						});
+				    }
+				});
+		});
+		var app = {appointment: {start_time: '2015-11-01 00:00:00', end_time: '2015-11-02 00:00:00', first_name: 'Test', last_name: 'User'}};
+		var app_id = null;
+		$.post('http://localhost:3000/appointments.json', app, function(data){
+			app_id = data.id;
+			console.log("Appointment added");
+			$.get('http://localhost:3000/appointments.json', function(data){
+						showData("test2",data);
+					});
+			$.ajax({
+			    url: 'http://localhost:3000/appointments/'+app_id+'.json',
+			    type: 'DELETE',
+			    success: function(result) {
+			        console.log("Appointment deleted");
+			        $.get('http://localhost:3000/appointments.json', function(data){
+						showData("test3",data);
+					});
+			    }
+			});
+		});
+		
+		function showData(id, data){
+			for (var a in data){
+				$('<div/>',{
+					text: data[a].id +"   "+data[a].first_name+" "+data[a].last_name+"  From: "+data[a].start_time+"  To: " + data[a].end_time
+				}).appendTo("#"+id);
+			}
+		}
+		</script>
+	</body>
+</html>
